@@ -11,4 +11,8 @@ async function updateNews(id, data) {
   });
 }
 
-export { createNews, updateNews };
+async function getAllNews() {
+  return await prisma.news.findMany({ orderBy: { date: "desc" } });
+}
+
+export { createNews, updateNews, getAllNews };

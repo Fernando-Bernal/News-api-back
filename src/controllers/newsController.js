@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { createNews, updateNews } from "../repositories/newsRepositories.js";
+import { createNews, updateNews, getAllNews } from "../repositories/newsRepositories.js";
 
 async function createNewsController(req, res, next) {
   const errors = validationResult(req);
@@ -40,4 +40,13 @@ async function updateNewsController(req, res, next) {
   }
 }
 
-export { createNewsController, updateNewsController };
+async function getAllNewsController(req, res, next) {
+  try {
+    const news = await getAllNews();
+    res.status(200).json(news);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { createNewsController, updateNewsController, getAllNewsController };
