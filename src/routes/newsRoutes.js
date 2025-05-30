@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { createNewsController } from "../controllers/newsController.js";
-import { validateNews } from "../middlewares/newsValidator.js";
+import { createNewsController, updateNewsController } from "../controllers/newsController.js";
+import { validateNews, validateNewsUpdate } from "../middlewares/newsValidator.js";
 
 const router = Router();
 
 router.post("/", validateNews, createNewsController);
+router.put("/:id", validateNewsUpdate, updateNewsController);
 
 export default router;
