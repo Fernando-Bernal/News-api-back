@@ -15,4 +15,16 @@ async function getAllNews() {
   return await prisma.news.findMany({ orderBy: { date: "desc" } });
 }
 
-export { createNews, updateNews, getAllNews };
+async function getNewsById(id){
+  return await prisma.news.findUnique({
+    where: { id: id },
+  });
+}
+
+async function deleteNews(id){
+  return await prisma.news.delete({
+    where: {id: id}
+  });
+}
+
+export { createNews, updateNews, getAllNews, getNewsById, deleteNews };

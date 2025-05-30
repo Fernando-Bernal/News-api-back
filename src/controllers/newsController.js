@@ -1,5 +1,11 @@
 import { validationResult } from "express-validator";
-import { createNews, updateNews, getAllNews } from "../repositories/newsRepositories.js";
+import {
+  createNews,
+  updateNews,
+  getAllNews,
+  getNewsById,
+  deleteNews,
+} from "../repositories/newsRepositories.js";
 
 async function createNewsController(req, res, next) {
   const errors = validationResult(req);
@@ -49,4 +55,37 @@ async function getAllNewsController(req, res, next) {
   }
 }
 
-export { createNewsController, updateNewsController, getAllNewsController };
+async function getNewsByIdController(req, res, next) {
+  const { id } = req.params;
+  try {
+    const news = await getNewsById(id);
+    if (!news) {
+      return res.status(404).json({ message: "Noticia no encontrada" });
+    }
+    res.status(200).json(news);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function deleteNewsController(req, res, next) {
+  try {
+    const { id } = req.params;
+    const news = await getNewsById(id);
+    if (!news) {
+      return res.status(404).json({ message: "Noticia no encontrada" });
+    }
+    await deleteNews(id);
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+
+export {
+  createNewsController,
+  updateNewsController,
+  getAllNewsController,
+  getNewsByIdController,
+  deleteNewsController,
+};
