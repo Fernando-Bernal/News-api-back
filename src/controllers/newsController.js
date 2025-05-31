@@ -5,6 +5,7 @@ import {
   getAllNews,
   getNewsById,
   deleteNews,
+  searchNews,
 } from "../repositories/newsRepositories.js";
 
 async function createNewsController(req, res, next) {
@@ -82,10 +83,21 @@ async function deleteNewsController(req, res, next) {
   }
 }
 
+async function searchNewsController(req, res, next) {
+  try {
+    const { text } = req.query;
+    const news = await searchNews({ text });
+    res.status(200).json(news);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   createNewsController,
   updateNewsController,
   getAllNewsController,
   getNewsByIdController,
   deleteNewsController,
+  searchNewsController,
 };

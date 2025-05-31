@@ -27,4 +27,15 @@ async function deleteNews(id){
   });
 }
 
-export { createNews, updateNews, getAllNews, getNewsById, deleteNews };
+async function searchNews({ text }) {
+  const where = {};
+  if (text) {
+    where.OR = [
+      { title: { contains: text, mode: "insensitive" } },
+      { author: { contains: text, mode: "insensitive" } },
+    ];
+  }
+  return await prisma.news.findMany({ where, orderBy: { date: "desc" } });
+}
+
+export { createNews, updateNews, getAllNews, getNewsById, deleteNews, searchNews };
